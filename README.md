@@ -1,8 +1,8 @@
 
-#<center>linux C 系统开发学习笔记</center>
+# <center>linux C 系统开发学习笔记</center>
 
-##I/O: input & output，是一切实现的基础
-###1. stdio（标准I/O）: FILE类型贯穿始终  
+## I/O: input & output，是一切实现的基础
+### 1. stdio（标准I/O）: FILE类型贯穿始终  
 
 * errno:  /usr/include/asm-generic/errno-base.h
           /usr/include/asm-generic/errno.h
@@ -62,7 +62,7 @@ fread(buf, 10, 1, fp);
     + tmpnam();  
     + tmpfile();  
     
-###2.sysio（系统调用I/O或文件I/O）
+### 2.sysio（系统调用I/O或文件I/O）
 fd是在文件IO章中贯穿始终的类型  
 
 
@@ -132,37 +132,37 @@ a+ | O_RDWR|O_CREAT|O_APPEND
 
 + /dev/fd/目录：虚目录，显示的是当前进程的文件描述符信息
   
-##文件系统
+## 文件系统
 
 类ls的实现，如myls
-###1.文件和目录
-####1）获取文件属性
+### 1.文件和目录
+#### 1）获取文件属性
     stat() ：通过文件路径获取属性，面对符号链接文件时获取的时所指向的目标文件的属性
     fstat()：通过文件描述符获取属性
     lstat()：面对符号链接时获取的时符号链接文件的属性
 
-####2）文件访问权限
+#### 2）文件访问权限
     mode_t：16位的位图，用于表示文件类型，文件访问权限，特殊权限位，可用
             man inode查看
     S_IFMT     0170000  0开始意味8进制数
     文件类型：dcb-lsp目录/字符设备/块设备/常规/符号链接/socket/管道文件
 
-####3）umask
+#### 3）umask
     作用：防止产生权限过松的文件
     计算：0666 & umask   （0666 & 0022 = 0644; rw-r--r--）
 
-####4）文件权限的更改/管理
+#### 4）文件权限的更改/管理
     chmod() 
     fchmod()
 
-####5）粘住位
+#### 5）粘住位
     t位：给某一个可执行二进制文件保留使用痕迹，使下次装载比较快
 
-####6）文件系统：FAT，UFS
+####  6）文件系统：FAT，UFS
     文件系统：文件或数据的存储和管理
     FAT16/32：静态存储的单链表
 
-####7）硬链接，符号链接
+#### 7）硬链接，符号链接
     硬链接是目录项的同义词，指向inode,并且不能跨分区建立，不能给目录建立
     符号链接：可跨分区，可以给目录建立
     link()；
@@ -170,19 +170,19 @@ a+ | O_RDWR|O_CREAT|O_APPEND
     remove()；  -> rm
     rename()；  -> mv
 
-####8）utime
+#### 8）utime
     可以更改文件的最后读的时间和最后修改的时间
 
-####9）目录的创建和销毁
+#### 9）目录的创建和销毁
     mkdir();
     rmdir();
 
-####10）更改当前工作路径
+#### 10）更改当前工作路径
     chdir();
     fchdir();
     getcwd(); ->  pwd
 
-####11）分析目录/读取目录内容
+#### 11）分析目录/读取目录内容
     glob(): 解析模式/通配符 
     globfree()
 
@@ -196,21 +196,21 @@ a+ | O_RDWR|O_CREAT|O_APPEND
     block/2就相当于以K为单位  
     如果一个变量在递归之前或之后，可以把它放到静态区  
 
-###2.系统数据文件和信息
-####1) /etc/passwd
+### 2.系统数据文件和信息
+#### 1) /etc/passwd
     getpwuid()
     getpwnam()
 
-####2) /etc/group
+#### 2) /etc/group
     getgrgid()
     getgrnam()
 
-####3) /etc/shadow
+#### 3) /etc/shadow
     getspnam()
     crypt()
     getpass()
 
-####4) 时间戳:time_t  char *   struct tm
+#### 4) 时间戳:time_t  char *   struct tm
     time()
     gmtime()
     localtime()
@@ -226,16 +226,16 @@ tm = localtime(&stamp);
 strftime(buf, BUFFSIZE, "%Y-%m-%d", tm);
 puts(buf);
 ```
-###3.进程环境
-####1) main函数
+### 3.进程环境
+#### 1) main函数
 ```c
     int main(int argc, char *argv[])
 ```  
 
-####2）进程的终止（**一字不差背下来**）   
+#### 2）进程的终止（**一字不差背下来**）   
     正常终止：  
         从main函数返回(进程的返回值是给父进程看的)  
-        调用exit
+        调用exi
         调用_exit或_Exit
         最后一个线程从其启动例程返回
         最后一个线程调用了pthread_exit  
@@ -247,21 +247,21 @@ puts(buf);
 
     atexit():钩子函数
 
-####3）命令行参数的分析
+#### 3）命令行参数的分析
     getopt()
     getopt_long()
 
-####4）环境变量
+#### 4）环境变量
     KET = VALUE
     envriron 存放环境变量的字符数组  
     getenv()
     setenv()
     putenv()
 
-####5）C程序的存储空间布局
+#### 5）C程序的存储空间布局
     pmap(1)
 
-####6）库
+#### 6）库
     动态库
     静态库
     手工装载库
@@ -270,24 +270,24 @@ puts(buf);
     dlerror()
     dlsym()
 
-####7）函数跳转
+#### 7）函数跳转
     goto()：不太行
     setjmp():设置跳转点
     longjmp()：跳转
 
-####8）资源的获取及控制  
+#### 8）资源的获取及控制  
     getrlimit()  
     setrlimit()
 
 ## 进程
-####1. 进程标识符pid
+#### 1. 进程标识符pid
     类型pid_t:传统而言是有符号16位整数
     命令：ps  
     进程号是顺次向下使用
     getpid();
     getppid();
 
-####2. 进程的产生
+#### 2. 进程的产生
     fork();  
     注意理解关键字：duplicating，意味着拷贝，克隆，一模一样等等  
     fork后父子进程的区别：fork的返回值不同，pid不同，ppid也不同，
@@ -299,14 +299,14 @@ puts(buf);
 
     vfork(); 快被废弃了
 
-####3. 进程的消亡及释放资源
+#### 3. 进程的消亡及释放资源
     wait();
     waitpid();
     waitid();
     wait3();
     wait4();
 
-####4. exec函数组
+#### 4. exec函数组
     定参实现
     execl();
     execlp();
@@ -316,7 +316,7 @@ puts(buf);
     execvp();  
     **注意fflush的使用**
 
-####5. 用户权限及组权限
+#### 5. 用户权限及组权限
     u+s: 用户使用这个文件的时候，身份会切换为该文件属于者的身份
     g+s：同上，组
     getuid();
@@ -331,21 +331,21 @@ puts(buf);
     setegid();
 
 
-####6. 观摩: 解释器函数
+#### 6. 观摩: 解释器函数
     #!/bin/bash: 装载一个二进制文件用来解释该文件
     比如这句话意思就是用/bin/bash来解释这个文件
     如果是#!/bin/cat就是用cat来解释这个文件
 
-####7. system();
+#### 7. system();
     相当于fork(), execl(), wait()的封装  可以类比few.c
 
-####8. 进程会计
+#### 8. 进程会计
     acct(); 了解一哈，纯方言    
 
-####9. 进程时间
+#### 9. 进程时间
     times();
 
-####10. 守护进程
+#### 10. 守护进程
     会话 session 标识sid
     终端
     setsid();
@@ -358,7 +358,7 @@ puts(buf);
     单实例守护进程：用锁文件/var/run/name.pid来控制单实例
     启动脚本文件：/etc/rc....
 
-####11. 系统日志
+#### 11. 系统日志
     syslogd服务
     openlog();
     syslog();
@@ -404,28 +404,28 @@ FUNCP p; ---> int *(*p)(int);
 
 ```
 
-###一、信号
-####1. 信号的概念
+### 一、信号
+#### 1. 信号的概念
     信号是软件中断。
     信号的响应依赖于中断。
     查看信号kill -l 
     1-31 标准信号
     34-64 实时信号
 
-####2. signal()
+#### 2. signal()
     void (*signal(int sig, void (*func)(int)))(int);
     信号会打断阻塞的系统调用。
 
-####3. 信号的不可靠
+#### 3. 信号的不可靠
     信号的行为不可靠
 
-####4. 可重入函数
+#### 4. 可重入函数
     第一次调用还没有结束就发生了第二次调用，而且不会出错的函数
     所有的系统调用都是可重入的，一部分库函数也是可重入的，
     如：memcpy(); localtime_r();
     有"_r"版本的函数，在信号这一块都需要用"_r"版本
 
-####5. 信号的响应过程
+#### 5. 信号的响应过程
     信号从收到到响应有一个不可避免的延迟
     思考：如何忽略掉一个信号的？ 
           标准信号为什么要丢失？ 由于位图
@@ -433,7 +433,7 @@ FUNCP p; ---> int *(*p)(int);
     不能从信号处理函数中随意的往外跳 
     （sigsetjmp, siglongjmp, setjmp, longjmp   ）
 
-####6. 常用函数
+#### 6. 常用函数
     kill();
     raise();
 
@@ -450,7 +450,7 @@ FUNCP p; ---> int *(*p)(int);
     usleep();
     select(-1, NULL, NULL, NULL, time);
 
-####7. 信号集
+#### 7. 信号集
     信号集类型：sigset_t
     sigemptyset();
     sigfillset();
@@ -458,22 +458,22 @@ FUNCP p; ---> int *(*p)(int);
     sigdelset();
     sigismember();
 
-####8. 信号屏蔽字和pending集的处理
+#### 8. 信号屏蔽字和pending集的处理
     sigprocmask(); 控制mask
     sigprnding();
 
-####9. 扩展
+#### 9. 扩展
     sigsuspend();
     sigaction(); 用来替代signal();
 
-####10. 实时信号    
+#### 10. 实时信号    
     /usr/include/bits/signum.h
     先响应标准信号 后响应实时信号
 
 
 
-###二、线程
-####1. 线程的概念
+### 二、线程
+#### 1. 线程的概念
     一个正在运行的函数
     posix 线程是一套标准，而不是实现
     openmp线程
@@ -482,7 +482,7 @@ FUNCP p; ---> int *(*p)(int);
     pthread_self();
     最好不要和信号大规模混用
 
-####2. 线程的创建
+#### 2. 线程的创建
     pthread_create();
     **线程的调度取决于调度器策略**
    
@@ -511,7 +511,7 @@ FUNCP p; ---> int *(*p)(int);
         pthread_detach(); 已经分离的不能再用pthread_join()收尸，各安天命
 
 
-####3. 线程同步
+#### 3. 线程同步
     互斥量：类型：pthread_mutex_t
             pthread_mutex_init();
             pthread_mutex_destroy();
@@ -536,7 +536,7 @@ FUNCP p; ---> int *(*p)(int);
     读写锁：读锁 -> 共享锁
             写锁 -> 互斥锁
 
-####4. 线程属性
+#### 4. 线程属性
     pthread_attr_init();
     pthread_attr_destroy();
     pthread_attr_setstacksize();
@@ -557,7 +557,7 @@ FUNCP p; ---> int *(*p)(int);
         读写锁属性：
         ..............
 
-####5. 重入
+#### 5. 重入
     多线程中的IO
     线程和信号的关系
         pthread_pending();
@@ -565,18 +565,18 @@ FUNCP p; ---> int *(*p)(int);
         pthread_kill();
 
     线程与fork
-####6. openmp(www.OpenMP.org)
+#### 6. openmp(www.OpenMP.org)
 
 
 ###高级IO
     非阻塞IO 
     补充：有限状态机编程
 
-####1. 非阻塞IO
+#### 1. 非阻塞IO
     简单流程：如果一个程序的自然流程是结构化的
     复杂流程：如果一个程序的自然流程不是结构化的
 
-####2. IO多路转接
+#### 2. IO多路转接
     select(); 以事件为单位组织文件描述符
     poll(); 以文件描述符来组织事件
     epoll(); linux方言
@@ -584,28 +584,28 @@ FUNCP p; ---> int *(*p)(int);
         epoll_ctl();
         epoll_wait();
 
-####3. 其他读写函数
+#### 3. 其他读写函数
     readv();
     writev();
 
-####4. 存储映射IO
+#### 4. 存储映射IO
     mmap();
     munmap();
-####5. 文件锁
+#### 5. 文件锁
     fcntl();
     lockf();
     flock();
 
-##进程间通信
-###管道
+## 进程间通信
+### 管道
 内核提供，单工，自同步机制
-####匿名管道
+#### 匿名管道
     pipe();
 
-####命名管道
+#### 命名管道
     mkfifo();
 
-###XSI -> SysV
+### XSI -> SysV
     IPC -> Inter-Process Communication
     
     主动端：先发包的一方
@@ -631,7 +631,7 @@ FUNCP p; ---> int *(*p)(int);
     shmop();
     shmctl();
     
-###网络套接字socket
+### 网络套接字socket
     讨论：跨主机的传输要注意的问题
     1. 字节序问题：
         大端：低地址处放高字节
@@ -698,10 +698,10 @@ FUNCP p; ---> int *(*p)(int);
     ***Q***:
     纯文本内容就是char型数组，都是单字节
     accept()创建的新套接字和原来的不一样吗？
-###俄罗斯方块
-####图形
+### 俄罗斯方块
+#### 图形
 
-####输入设备
+#### 输入设备
 
 
-####并发
+#### 并发
